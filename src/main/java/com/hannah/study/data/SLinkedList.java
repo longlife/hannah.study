@@ -78,7 +78,7 @@ public class SLinkedList<T> {
      */
     public SNode<T> findPreNode(T item) {
         SNode<T> node = headNode;
-        while (isTailNode(node)) {
+        while (!isTailNode(node)) {
             if (item.equals(node.getNext().getItem())) {
                 return node;
             }

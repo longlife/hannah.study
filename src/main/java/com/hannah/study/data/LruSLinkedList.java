@@ -29,7 +29,7 @@ public class LruSLinkedList<T> extends SLinkedList<T> {
     }
 
     public static void main(String[] args) {
-        SLinkedList<Integer> list = new CLinkedList<>(10);
+        SLinkedList<Integer> list = new LruSLinkedList<>(10);
         for (int i = 0; i < 10; i++) {
             list.add(i);
         }
