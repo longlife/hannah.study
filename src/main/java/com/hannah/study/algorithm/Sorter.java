@@ -39,18 +39,39 @@ public class Sorter {
     public static void insertionSort(int[] a, int n) {
         if (n <= 1) return;
 
-        for (int i = 0; i < n; i++) { // 右边无序区
+        _insertionSort(a, n, 1);
+    }
+
+    private static void _insertionSort(int[] a, int n, int gap) {
+        for (int i = gap; i < n; i+= gap) { // 右边无序区
             int temp = a[i];
-            int j = i - 1;
-            for (; j >= 0; j--) { // 左边有序区
+            int j = i - gap;
+            for (; j >= 0; j-= gap) { // 左边有序区
                 // 无序区元素<有序区元素 -> 有序区右移
                 if (temp < a[j]) {
-                    a[j + 1] = a[j];
+                    a[j + gap] = a[j];
                 } else {
                     break;
                 }
             }
-            a[j + 1] = temp;// 插入
+            a[j + gap] = temp;// 插入
+        }
+    }
+
+    /**
+     * 希尔排序【不稳定】
+     * 时间复杂度 O(nlog2n)；空间复杂度 O(1)
+     * @param a
+     * @param n
+     */
+    public static void shellSort(int[] a, int n) {
+        if (n <= 1) return;
+
+        int gap = n/2; // 间距
+        while (gap > 0) {
+            // 插入排序
+            _insertionSort(a, n, gap);
+            gap /= 2; // 每次减半
         }
     }
 
@@ -82,7 +103,7 @@ public class Sorter {
 
     public static void main(String[] args) {
         int[] a = {3, 5, 4, 1, 7, 9, 2, 6, 8};
-        Sorter.selectionSort(a, a.length);
+        Sorter.shellSort(a, a.length);
         System.out.println(Arrays.toString(a));
     }
 
