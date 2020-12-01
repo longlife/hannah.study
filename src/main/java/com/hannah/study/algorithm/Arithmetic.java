@@ -46,8 +46,8 @@ public class Arithmetic {
                     char priorOperator = operatorStack.peek();
                     // 如果当前运算符优先级等于小于栈顶的运算符优先级，那么取出数字栈栈顶的两个数字运算
                     if (getOperatorLevel(c) <= getOperatorLevel(priorOperator)) {
-                        BigDecimal d1 = numberStack.pop();
                         BigDecimal d2 = numberStack.pop();
+                        BigDecimal d1 = numberStack.pop();
                         char operator = operatorStack.pop();
                         // 新的运算结果压入数字栈
                         numberStack.push(calculate(d1, d2, operator));
@@ -60,8 +60,8 @@ public class Arithmetic {
                     char operator;
                     // 循环运算直到找到 (
                     while ((operator = operatorStack.pop()) != '(') {
-                        BigDecimal d1 = numberStack.pop();
                         BigDecimal d2 = numberStack.pop();
+                        BigDecimal d1 = numberStack.pop();
                         numberStack.push(calculate(d1, d2, operator));
                     }
                 } else if (c == ' ')
