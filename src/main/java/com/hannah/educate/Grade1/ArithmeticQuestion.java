@@ -36,7 +36,7 @@ public class ArithmeticQuestion {
         return exp;
     }
 
-    class ArithmeticExp {
+    public class ArithmeticExp {
 
         private String expression;
         private BigDecimal value;
@@ -64,7 +64,7 @@ public class ArithmeticQuestion {
 
         @Override
         public String toString() {
-            return expression;
+            return expression + "【" + value + "】";
         }
     }
 
