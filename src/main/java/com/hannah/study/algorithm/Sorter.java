@@ -1,6 +1,7 @@
 package com.hannah.study.algorithm;
 
 import java.util.Arrays;
+import java.util.Random;
 
 /**
  * 排序
@@ -192,10 +193,60 @@ public class Sorter {
         a[k] = temp;
     }
 
+    /**
+     * 桶排序【数据差值小于n时即为计数排序】
+     * 时间复杂度 O(n)；空间复杂度 O(n)
+     * @param a
+     * @param n
+     */
+    public static void bucketSort(int[] a, int n) {
+        // 计算最大值与最小值
+        int min = a[0];
+        int max = a[0];
+        for (int i = 1; i < a.length; i++) {
+            min = Math.min(min, a[i]);
+            max = Math.max(max, a[i]);
+        }
+        // 计算桶的数量
+        int bucketNum = (max - min) / n + 1;
+        boolean isCounting = bucketNum == 1; // 计数排序
+        if (isCounting)
+            bucketNum = max - min + 1;
+        System.out.println("Info: 最大 " + max + ", 最小 " + min + ", 分配桶 " + bucketNum);
+        // 创建桶：记录每个桶的当前位置
+        int[][] buckets = new int[bucketNum][n]; // 默认最大容量不扩容
+        int[] bucketPoint = new int[bucketNum];
+        // 将每个元素放入桶
+        for (int i = 0; i < a.length; i++) {
+            int num = isCounting ? a[i] - min : (a[i] - min) / n;
+            int point = bucketPoint[num]++;
+            buckets[num][point] = a[i];
+        }
+        // 对每个桶进行排序
+        if (!isCounting) {
+            for (int i = 0; i < bucketNum; i++) {
+                mergeSort(buckets[i], bucketPoint[i]);
+            }
+        }
+        // 将所有桶元素按顺序写回原数组
+        int index = 0;
+        for (int i = 0; i < bucketNum; i++) {
+            int point = bucketPoint[i];
+            for (int j = 0; j < point; j++) {
+                a[index++] = buckets[i][j];
+            }
+        }
+    }
+
     public static void main(String[] args) {
-        int[] a = {3, 5, 4, 1, 7, 9, 2, 6, 8};
-        Sorter.quickSort(a, a.length);
-        System.out.println(Arrays.toString(a));
+        Random random = new Random();
+        int[] a = new int[100];
+        for (int i = 0; i < a.length; i++) {
+            a[i] = random.nextInt(20);
+        }
+        System.out.println("原数组：" + Arrays.toString(a));
+        Sorter.bucketSort(a, a.length);
+        System.out.println("新数组：" + Arrays.toString(a));
     }
 
 }
