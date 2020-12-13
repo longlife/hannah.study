@@ -13,7 +13,7 @@ public class ArithmeticQuestion {
     public Random random = new Random();
 
     public BigDecimal randomDigit() {
-        return new BigDecimal(random.nextInt(9) + 2);
+        return new BigDecimal(random.nextInt(17) + 3);
     }
 
     public char randomOperator() {
@@ -30,7 +30,7 @@ public class ArithmeticQuestion {
         for (int i = 1; i < count; i++) {
             do {
                 nextExp = randomExp(exp);
-            } while (nextExp.getValue().compareTo(BigDecimal.ZERO) <= 0 || nextExp.getValue().compareTo(resultLimit) >= 0);
+            } while (nextExp.getValue().compareTo(new BigDecimal(2)) <= 0 || nextExp.getValue().compareTo(resultLimit) >= 0);
             exp = nextExp;
         }
         return exp;
