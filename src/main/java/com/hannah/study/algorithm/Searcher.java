@@ -21,12 +21,21 @@ public class Searcher {
         int high = n - 1;
         while (low <= high) {
             int mid = low + ((high - low) >> 1); // 除2可以用位运算优化
-            if (a[mid] == value) {
-                return mid;
-            } else if (a[mid] < value) {
+            if (a[mid] < value) {
                 low = mid + 1; // mid位<value：取右边继续
-            } else {
+            } else if (a[mid] > value) {
                 high = mid - 1; // mid位>value：取左边继续
+            } else {
+                return mid;
+                /**
+                 * 存在重复元素的情况
+                 * 查找第一个
+                 * if ((mid == 0) || (a[mid - 1] != value)) return mid;
+                 * else high = mid - 1;
+                 * 查找最后一个
+                 * if ((mid == n - 1) || (a[mid + 1] != value)) return mid;
+                 * else low = mid + 1;
+                 */
             }
         }
         return -1;
