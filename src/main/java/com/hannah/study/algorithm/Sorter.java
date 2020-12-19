@@ -166,6 +166,13 @@ public class Sorter {
         _quickSort(a, q + 1, r);
     }
 
+    /**
+     * 取基准数【TODO 三中取数法】
+     * @param a
+     * @param p
+     * @param r
+     * @return
+     */
     private static int _partition(int[] a, int p, int r) {
         int pivot = a[r]; // 基准元素
         int i = p; // 左边<基准；右边>基准
@@ -222,7 +229,7 @@ public class Sorter {
             int point = bucketPoint[num]++;
             buckets[num][point] = a[i];
         }
-        // 对每个桶进行排序
+        // 对每个桶进行归并排序
         if (!isCounting) {
             for (int i = 0; i < bucketNum; i++) {
                 mergeSort(buckets[i], bucketPoint[i]);
@@ -240,9 +247,9 @@ public class Sorter {
 
     public static void main(String[] args) {
         Random random = new Random();
-        int[] a = new int[100];
+        int[] a = new int[20];
         for (int i = 0; i < a.length; i++) {
-            a[i] = random.nextInt(20);
+            a[i] = random.nextInt(100);
         }
         System.out.println("原数组：" + Arrays.toString(a));
         Sorter.bucketSort(a, a.length);
