@@ -228,7 +228,7 @@ public class Sorter {
         // 计算桶的数量
         int bucketNum = Math.min((max - min) / n + 1, maxBucket);
         if (bucketNum == 1)
-            bucketNum = max - min + 1;
+            bucketNum = Math.min(max - min + 1, maxBucket);
         System.out.println("Info: 最大 " + max + ", 最小 " + min + ", 分配桶 " + bucketNum);
         int bucketSection = (int) Math.ceil((max - min + 1) / (double) bucketNum); // 每个桶的数值区间
         // 创建桶：记录每个桶的当前位置
