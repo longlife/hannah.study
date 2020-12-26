@@ -2,6 +2,7 @@ package com.hannah.study.algorithm;
 
 import java.util.Arrays;
 import java.util.Random;
+import java.util.function.Function;
 
 /**
  * 排序
@@ -210,27 +211,37 @@ public class Sorter {
         // 计算最大值与最小值
         int min = a[0];
         int max = a[0];
-        for (int i = 1; i < a.length; i++) {
+        for (int i = 1; i < n; i++) {
             min = Math.min(min, a[i]);
             max = Math.max(max, a[i]);
         }
+        int maxBucket = 128; // TODO MAX桶数量
+        _bucketSort(a, n, min, max, maxBucket, new Function<Integer, Integer>() {
+            @Override
+            public Integer apply(Integer i) {
+                return a[i];
+            }
+        });
+    }
+
+    private static void _bucketSort(int[] a, int n, int min, int max, int maxBucket, Function<Integer, Integer> aFun) {
         // 计算桶的数量
-        int bucketNum = (max - min) / n + 1;
-        boolean isCounting = bucketNum == 1; // 计数排序
-        if (isCounting)
+        int bucketNum = Math.min((max - min) / n + 1, maxBucket);
+        if (bucketNum == 1)
             bucketNum = max - min + 1;
         System.out.println("Info: 最大 " + max + ", 最小 " + min + ", 分配桶 " + bucketNum);
+        int bucketSection = (int) Math.ceil((max - min + 1) / (double) bucketNum); // 每个桶的数值区间
         // 创建桶：记录每个桶的当前位置
-        int[][] buckets = new int[bucketNum][n]; // 默认最大容量不扩容
+        int[][] buckets = new int[bucketNum][n]; // TODO 最大容量不扩容
         int[] bucketPoint = new int[bucketNum];
         // 将每个元素放入桶
-        for (int i = 0; i < a.length; i++) {
-            int num = isCounting ? a[i] - min : (a[i] - min) / n;
+        for (int i = 0; i < n; i++) {
+            int num = (aFun.apply(i) - min) / bucketSection;
             int point = bucketPoint[num]++;
             buckets[num][point] = a[i];
         }
-        // 对每个桶进行归并排序
-        if (!isCounting) {
+        // 对每个桶进行归并排序【bucketSection=1 退化为计数排序】
+        if (bucketSection > 1) {
             for (int i = 0; i < bucketNum; i++) {
                 mergeSort(buckets[i], bucketPoint[i]);
             }
@@ -245,15 +256,36 @@ public class Sorter {
         }
     }
 
+    /**
+     * 基数排序
+     * 时间复杂度 O(n)；空间复杂度 O(n)
+     * @param a
+     * @param n
+     * @param maxBit 最大位
+     */
+    public static void radixSort(int[] a, int n, int maxBit) {
+        for (int bit = 0; bit < maxBit; bit++) {
+            int pow = (int) Math.pow(10, bit);
+            _bucketSort(a, n, 0, 9, 10, new Function<Integer, Integer>() {
+                @Override
+                public Integer apply(Integer i) {
+                    return a[i] / pow % 10;
+                }
+            });
+        }
+    }
+
     public static void main(String[] args) {
         Random random = new Random();
-        int[] a = new int[20];
+        int[] a = new int[100];
         for (int i = 0; i < a.length; i++) {
-            a[i] = random.nextInt(100);
+            a[i] = random.nextInt(100000000);
         }
         System.out.println("原数组：" + Arrays.toString(a));
+        Sorter.radixSort(a, a.length, 10);
+        System.out.println("新数组1：" + Arrays.toString(a));
         Sorter.bucketSort(a, a.length);
-        System.out.println("新数组：" + Arrays.toString(a));
+        System.out.println("新数组2：" + Arrays.toString(a));
     }
 
 }
