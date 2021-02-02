@@ -10,10 +10,17 @@ import java.util.Random;
  */
 public class ArithmeticQuestion {
 
-    public Random random = new Random();
+    private Random random = new Random(System.currentTimeMillis());
+    private int expCount;
+    private int resultLimit;
+
+    public ArithmeticQuestion(int expCount, int resultLimit) {
+        this.expCount = expCount;
+        this.resultLimit = resultLimit;
+    }
 
     public BigDecimal randomDigit() {
-        return new BigDecimal(random.nextInt(17) + 3);
+        return new BigDecimal(random.nextInt(resultLimit * 9 / 10) + resultLimit / 10 + 1);
     }
 
     public char randomOperator() {
@@ -24,13 +31,14 @@ public class ArithmeticQuestion {
         return new ArithmeticExp(exp.getExpression() + randomOperator() + randomDigit());
     }
 
-    public ArithmeticExp createExpOfAddSub(int count, BigDecimal resultLimit) {
+    public ArithmeticExp createExpOfAddSub() {
         ArithmeticExp exp = new ArithmeticExp(randomDigit().toString());
         ArithmeticExp nextExp = null;
-        for (int i = 1; i < count; i++) {
+        for (int i = 1; i < expCount; i++) {
             do {
                 nextExp = randomExp(exp);
-            } while (nextExp.getValue().compareTo(new BigDecimal(2)) <= 0 || nextExp.getValue().compareTo(resultLimit) >= 0);
+            } while (nextExp.getValue().compareTo(new BigDecimal(resultLimit / 10)) <= 0
+                    || nextExp.getValue().compareTo(new BigDecimal(resultLimit)) >= 0);
             exp = nextExp;
         }
         return exp;
@@ -64,14 +72,14 @@ public class ArithmeticQuestion {
 
         @Override
         public String toString() {
-            return expression + "【" + value + "】";
+            return expression;
         }
     }
 
     public static void main(String[] args) {
-        ArithmeticQuestion question = new ArithmeticQuestion();
+        ArithmeticQuestion question = new ArithmeticQuestion(3, 100);
         for (int i = 0; i < 1000; i++) {
-            ArithmeticExp exp = question.createExpOfAddSub(3, new BigDecimal(20));
+            ArithmeticExp exp = question.createExpOfAddSub();
             if (i%2 == 0) System.out.print(exp);
             else System.out.println("\t?\t" + exp);
         }
