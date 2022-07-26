@@ -87,6 +87,17 @@ public class SLinkedList<T> {
         return null;
     }
 
+    public boolean remove(T item) {
+        // 根据item值查找前置节点
+        SNode preNode = findPreNode(item);
+        // 如果前置节点存在，则删除原先的节点
+        if (preNode != null) {
+            removeByPreNode(preNode);
+            return true;
+        }
+        return false;
+    }
+
     /**
      * 删除节点
      * @param preNode 前置节点

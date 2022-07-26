@@ -19,12 +19,8 @@ public class LruSLinkedList<T> extends SLinkedList<T> {
      */
     @Override
     public boolean add(T item) {
-        // 根据item值查找前置节点
-        SNode preNode = findPreNode(item);
-        // 如果前置节点存在，则删除原先的节点，再插入链表头部
-        if (preNode != null) {
-            removeByPreNode(preNode);
-        }
+        // 删除原先的节点，再插入链表头部
+        super.remove(item);
         return super.add(item);
     }
 
