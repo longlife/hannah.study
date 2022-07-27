@@ -36,4 +36,10 @@ public class SNode<T> {
         this.next = next;
     }
 
+    @Override
+    public String toString() {
+        return "SNode{" +
+                "item=" + item +
+                '}';
+    }
 }

@@ -170,16 +170,14 @@ public class SkipList<T> {
     }
 
     public static void main(String[] args) {
-        SkipList<Integer> list2 = new SkipList<>();
-        list2.add(1);
-        list2.add(3);
-        list2.add(5);
-        list2.printAll();
-
-        list2.add(2);
-        for (int i = 0; i < 20; i++) {
-//            list2.add(i%10);
-        }
-        list2.printAll();
+        SkipList<Integer> list = new SkipList<>();
+        list.add(1);
+        list.add(3);
+        list.add(5);
+        list.add(2);
+        list.add(9);
+        list.printAll();
+        System.out.println(list.find(5));
+        System.out.println(list.find(4));
     }
 }
