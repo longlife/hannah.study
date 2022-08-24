@@ -36,6 +36,7 @@ public class FactoryProcessor extends AbstractProcessor {
         elementUtils = processingEnv.getElementUtils();
         filer = processingEnv.getFiler();
         messager = processingEnv.getMessager();
+        System.out.println("----------------FactoryProcessor init---------------------");
     }
 
     @Override
@@ -52,6 +53,7 @@ public class FactoryProcessor extends AbstractProcessor {
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
+        System.out.println("----------------FactoryProcessor process---------------------");
         Element element = null;
         try {
             for (Element annotatedElement : roundEnv.getElementsAnnotatedWith(Factory.class)) {
@@ -74,13 +76,13 @@ public class FactoryProcessor extends AbstractProcessor {
                     factoryClassesMap.put(qualifiedGroupName, factoryGroupedClasses);
                 }
                 factoryGroupedClasses.add(annotatedClass);
-
-                // generate code
-                for (FactoryGroupedClasses groupedClasses : factoryClassesMap.values()) {
-                    groupedClasses.generateCode(elementUtils, filer);
-                }
-                factoryClassesMap.clear();
             }
+
+            // generate code
+            for (FactoryGroupedClasses groupedClasses : factoryClassesMap.values()) {
+                groupedClasses.generateCode(elementUtils, filer);
+            }
+            factoryClassesMap.clear();
         } catch (Exception e) {
             messager.printMessage(Diagnostic.Kind.ERROR, e.getMessage(), element);
         }

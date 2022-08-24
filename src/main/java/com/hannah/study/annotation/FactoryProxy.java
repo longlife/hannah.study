@@ -11,7 +11,7 @@ public class FactoryProxy {
         try {
             Class<?> factoryClass = Class.forName(clazz.getCanonicalName() + FactoryGroupedClasses.SUFFIX);
             Object instance = factoryClass.newInstance();
-            Method method = factoryClass.getDeclaredMethod("create");
+            Method method = factoryClass.getDeclaredMethod("create", String.class);
             return (T) method.invoke(instance, id);
         } catch (Exception e) {
             e.printStackTrace();

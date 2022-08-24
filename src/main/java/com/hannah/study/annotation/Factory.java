@@ -11,6 +11,6 @@ public @interface Factory {
 
     Class type();
 
-    String id() default "";
+    String id() default ""; // 默认取类名作为ID
 
 }
