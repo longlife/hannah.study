@@ -1,5 +1,8 @@
 package com.hannah.study.annotation;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -12,7 +15,7 @@ import java.util.Map;
  */
 public class ExcelImporter {
 
-    public static <T> List<T> readXls(InputStream in, Class<T> clazz) throws Exception {
+    public static <T> List<T> readXls(InputStream in, Class<T> clazz) {
         // key/value：title/field
         Map<String, String> fieldMap = new HashMap<>();
         // 解析@ExcelHeader注解
@@ -66,5 +69,11 @@ public class ExcelImporter {
         ...
          */
         return list;
+    }
+
+    public static void main(String[] args) throws FileNotFoundException {
+        File file = new File("");
+        List<ExcelImportVo> list = ExcelImporter.readXls(new FileInputStream(file), ExcelImportVo.class);
+        System.out.println(list);
     }
 }
