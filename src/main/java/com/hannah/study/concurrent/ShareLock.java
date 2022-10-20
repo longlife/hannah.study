@@ -15,6 +15,7 @@ public class ShareLock {
 			return getState();
 		}
 
+		@Override
 		protected int tryAcquireShared(int acquires) {
 			for (;;) {
 				int c = getState();
@@ -28,6 +29,7 @@ public class ShareLock {
 			}
 		}
 
+		@Override
 		protected boolean tryReleaseShared(int releases) {
 			for (;;) {
 				int c = getState();
